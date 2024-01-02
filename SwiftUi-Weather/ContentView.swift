@@ -8,13 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var isNight = false
+    
     var body: some View {
         ZStack {
-            BackgroundView()
+            BackgroundView(isNight: $isNight)
+            
             VStack{
                 CityTextView(cityCountry: "Warszawa, PL", imageName: "cloud.sun.fill", temperature: 12)
                 
                 Spacer()
+                
                 HStack(spacing: 20){
                     WeatherDayView(dayOfWeek: "Mon", imageName: "cloud.sun.fill", temperature: 12)
                     WeatherDayView(dayOfWeek: "Tue", imageName: "cloud.fill", temperature: 11)
@@ -25,9 +30,9 @@ struct ContentView: View {
                 Spacer()
                 
                 Button {
-                print("tapped")
+                    isNight.toggle()
                 } label: {
-                    WeatherButton(title: "Change region",
+                    WeatherButton(title: "Change DayTime",
                                   textColor: .blue,
                                   backgroundColor: .white)
                 }
@@ -71,11 +76,14 @@ struct WeatherDayView: View {
 
 struct BackgroundView: View {
     
+    @Binding var isNight: Bool
+
     var body: some View {
         LinearGradient(gradient:
-                        Gradient(colors: [Color.blue, Color("LightBlue")]), startPoint: .topLeading,
-                       endPoint: .bottomTrailing)
-        .ignoresSafeArea()
+                        Gradient(colors: [isNight ? Color.black : Color.blue,
+                                          isNight ? Color.gray : Color("LightBlue")
+                                         ]), startPoint: .topLeading,endPoint: .bottomTrailing)
+                                        .ignoresSafeArea()
     }
 }
 
@@ -106,4 +114,3 @@ struct CityTextView: View {
     }
 }
 
-//this is a test
